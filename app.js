@@ -14,3 +14,15 @@ if (readerSections.length && 'IntersectionObserver' in window) {
   }, {rootMargin: '-5% 0px -65% 0px'});
   readerSections.forEach(section => observer.observe(section));
 }
+
+// A direct retail listing can be supplied when the book is live.
+const settings=window.BOOK_SITE||{};
+if(settings.amazonUrl){
+  try{
+    const url=new URL(settings.amazonUrl);
+    if(url.protocol==='https:')document.querySelectorAll('[data-amazon-link]').forEach(link=>{
+      link.href=url.href;
+      if(settings.amazonLabel){link.textContent=settings.amazonLabel+' ↗';}
+    });
+  }catch(error){console.warn('The Amazon URL in site-config.js is not valid.');}
+}
